@@ -5,7 +5,7 @@
   "main": "dist/main/main.js",
   "scripts": {
     "build:main": "tsc -p tsconfig.main.json",
-    "build:renderer": "tsc -p tsconfig.renderer.json",
+    "build:renderer": "esbuild src/renderer/ts/renderer.ts --bundle --outfile=dist/renderer/ts/renderer.js --platform=browser",
     "copy:assets": "node -e \"require('fs').cpSync('src/renderer', 'dist/renderer', {recursive:true, filter: (s) => !s.endsWith('.ts')})\"",
     "build": "npm run build:main && npm run build:renderer && npm run copy:assets",
     "start": "npm run build && electron .",
@@ -14,9 +14,10 @@
     "dist": "npm run build && electron-builder --win --x64"
   },
   "devDependencies": {
+    "@types/node": "^22.0.0",
     "electron": "^33.0.0",
     "electron-builder": "^25.0.0",
-    "typescript": "^5.4.5",
-    "@types/node": "^22.0.0"
+    "esbuild": "^0.28.0",
+    "typescript": "^5.4.5"
   }
 }

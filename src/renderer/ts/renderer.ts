@@ -1,6 +1,6 @@
 import type { AppConfig } from '../../shared/types';
-import { initMonitorView, updateMonitorConfig } from './monitor-view.js';
-import { initSettingsView } from './settings-view.js';
+import { initMonitorView, updateMonitorConfig } from './monitor-view';
+import { initSettingsView } from './settings-view';
 
 async function bootstrap(): Promise<void> {
   const config: AppConfig = await window.concentratorAPI.loadConfig();
