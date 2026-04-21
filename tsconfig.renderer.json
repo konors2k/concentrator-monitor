@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "module": "ES2020",
-    "moduleResolution": "bundler",
+    "module": "Node16",
+    "moduleResolution": "node16",
     "lib": ["ES2020", "DOM"],
-    "outDir": "dist/renderer",
-    "rootDir": "src/renderer",
+    "outDir": "dist",
+    "rootDir": "src",
     "strict": true,
     "sourceMap": true,
     "skipLibCheck": true
