@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'" />
+  <title>Concentrator Monitor</title>
+  <link rel="stylesheet" href="./styles/main.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Sidebar -->
+    <aside id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <div class="logo-icon">CM</div>
+          <div>
+            <div class="sidebar-title">Concentrator<br>Monitor</div>
+          </div>
+        </div>
+        <div class="sidebar-badge">Internal Use ONLY</div>
+      </div>
+      <nav>
+        <div class="nav-section-label">Navigation</div>
+        <button class="nav-item active" data-view="monitor">
+          <span class="nav-icon">⬡</span>
+          Monitor
+        </button>
+        <button class="nav-item" data-view="settings">
+          <span class="nav-icon">⚙</span>
+          Settings
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="nav-item" style="cursor:default;font-size:11px;color:var(--text-muted);">v1.0.0</div>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main id="content">
+
+      <!-- Monitor View -->
+      <section id="view-monitor" class="view active">
+        <div class="view-header">
+          <div class="view-title">Connection Monitor</div>
+          <div class="view-subtitle">Live count of ESTABLISHED TCP connections on the configured port.</div>
+        </div>
+
+        <div class="monitor-grid">
+          <!-- Big count card -->
+          <div class="card count-card">
+            <div id="count-display">--</div>
+            <div class="count-label">ESTABLISHED CONNECTIONS</div>
+            <div class="port-badge" id="port-badge">:443</div>
+            <div id="status-line" class="status-line">Idle</div>
+            <div id="last-updated"></div>
+          </div>
+
+          <!-- Info card -->
+          <div class="card info-card">
+            <div class="card-title" style="margin-bottom:16px;">Details</div>
+
+            <div class="info-row">
+              <div class="info-row-label">Command</div>
+              <div class="info-row-value" style="font-family:monospace;font-size:11px;word-break:break-all;color:var(--text-muted);">
+                netstat -na | findstr ":PORT" | findstr "ESTABLISHED" | find /c "ESTABLISHED"
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="info-row">
+              <div class="info-row-label">Monitored Port</div>
+              <div class="info-row-value" id="detail-port">443</div>
+            </div>
+
+            <div class="info-row">
+              <div class="info-row-label">Refresh Interval</div>
+              <div class="info-row-value" id="detail-interval">5s</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="controls-row">
+              <button id="btn-toggle" class="btn-primary">Start Monitoring</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Settings View -->
+      <section id="view-settings" class="view">
+        <div class="view-header">
+          <div class="view-title">Settings</div>
+          <div class="view-subtitle">Configure the monitored port and polling interval.</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 280px;gap:20px;max-width:760px;">
+          <div class="card">
+            <div class="card-title" style="margin-bottom:20px;">Connection Settings</div>
+
+            <div class="settings-grid">
+              <div class="field-group">
+                <div class="field-label">Port Number</div>
+                <input id="input-port" class="field-input" type="number" min="1" max="65535" value="443" />
+                <div class="field-hint">1 – 65535</div>
+              </div>
+
+              <div class="field-group">
+                <div class="field-label">Refresh Interval (seconds)</div>
+                <input id="input-interval" class="field-input" type="number" min="1" max="3600" value="5" />
+                <div class="field-hint">1 – 3600 seconds</div>
+              </div>
+            </div>
+
+            <div class="settings-actions" style="margin-top:24px;">
+              <button id="btn-save" class="btn-primary">Save Settings</button>
+              <span id="save-status" class="save-status"></span>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div class="info-box">
+              <div class="info-box-icon">💾</div>
+              <div>
+                <div class="info-box-title">Local Storage</div>
+                <div class="info-box-desc">Configuration is saved to disk on this machine only. Settings are never sent to the cloud.</div>
+              </div>
+            </div>
+
+            <div class="info-box">
+              <div class="info-box-icon">🔌</div>
+              <div>
+                <div class="info-box-title">Port Monitoring</div>
+                <div class="info-box-desc">Uses <code style="font-family:monospace;color:var(--accent);">netstat</code> to count ESTABLISHED connections. Requires standard Windows networking tools.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script type="module" src="./ts/renderer.js"></script>
+</body>
+</html>

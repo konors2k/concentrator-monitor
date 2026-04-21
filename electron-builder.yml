@@ -1,0 +1,25 @@
+appId: com.concentratormonitor
+productName: Concentrator Monitor
+copyright: Copyright 2026
+
+directories:
+  output: release
+  buildResources: buildResources
+
+files:
+  - dist/**/*
+  - package.json
+
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Concentrator Monitor
+
+publish: null
