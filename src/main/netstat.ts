@@ -1,4 +1,4 @@
-import { exec } from 'child_process';
+import { exec, ExecException } from 'child_process';
 import type { NetstatResult } from '../shared/types';
 
 export function runNetstatQuery(port: number): Promise<NetstatResult> {
@@ -10,7 +10,7 @@ export function runNetstatQuery(port: number): Promise<NetstatResult> {
     }
 
     const cmd = `netstat -na | findstr ":${safePort}" | findstr "ESTABLISHED" | find /c "ESTABLISHED"`;
-    exec(cmd, { shell: true, timeout: 8000 }, (err, stdout, stderr) => {
+    exec(cmd, { shell: 'cmd.exe', timeout: 8000 }, (err: ExecException | null, stdout: string, stderr: string) => {
       const timestamp = Date.now();
       const raw = stdout.trim();
       const count = parseInt(raw, 10);
