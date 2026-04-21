@@ -9,6 +9,8 @@ const statusLine = document.getElementById('status-line') as HTMLElement;
 const lastUpdated = document.getElementById('last-updated') as HTMLElement;
 const btnToggle = document.getElementById('btn-toggle') as HTMLButtonElement;
 const portBadge = document.getElementById('port-badge') as HTMLElement;
+const detailPort = document.getElementById('detail-port') as HTMLElement;
+const detailInterval = document.getElementById('detail-interval') as HTMLElement;
 
 export function initMonitorView(config: AppConfig): void {
   currentConfig = config;
@@ -84,4 +86,6 @@ function animateCount(result: NetstatResult): void {
 
 function updatePortBadge(): void {
   if (portBadge) portBadge.textContent = `:${currentConfig.port}`;
+  if (detailPort) detailPort.textContent = String(currentConfig.port);
+  if (detailInterval) detailInterval.textContent = `${currentConfig.intervalSeconds}s`;
 }
