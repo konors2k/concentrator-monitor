@@ -4,8 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'" />
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self'" />
   <title>Concentrator Monitor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./styles/main.css" />
 </head>
 <body>
@@ -16,7 +19,8 @@
         <div class="sidebar-logo">
           <div class="logo-icon">CM</div>
           <div>
-            <div class="sidebar-title">Concentrator<br>Monitor</div>
+            <div class="sidebar-title">Concentrator Monitor</div>
+            <div class="sidebar-subtitle">Assa Abloy Marine Division</div>
           </div>
         </div>
         <div class="sidebar-badge">Internal Use ONLY</div>
@@ -33,7 +37,14 @@
         </button>
       </nav>
       <div class="sidebar-footer">
-        <div class="nav-item" style="cursor:default;font-size:11px;color:var(--text-muted);">v1.0.0</div>
+        <button class="nav-item nav-footer-item" data-view="manual">
+          <span class="nav-icon">📖</span>
+          User Manual
+        </button>
+        <div class="version-row">
+          <span class="version-dot"></span>
+          v1.0.0
+        </div>
       </div>
     </aside>
 
@@ -52,7 +63,7 @@
           <div class="card count-card">
             <div id="count-display">--</div>
             <div class="count-label">ESTABLISHED CONNECTIONS</div>
-            <div class="port-badge" id="port-badge">:443</div>
+            <div class="port-badge" id="port-badge">:7799</div>
             <div id="status-line" class="status-line">Idle</div>
             <div id="last-updated"></div>
           </div>
@@ -72,7 +83,7 @@
 
             <div class="info-row">
               <div class="info-row-label">Monitored Port</div>
-              <div class="info-row-value" id="detail-port">443</div>
+              <div class="info-row-value" id="detail-port">7799</div>
             </div>
 
             <div class="info-row">
@@ -103,7 +114,7 @@
             <div class="settings-grid">
               <div class="field-group">
                 <div class="field-label">Port Number</div>
-                <input id="input-port" class="field-input" type="number" min="1" max="65535" value="443" />
+                <input id="input-port" class="field-input" type="number" min="1" max="65535" value="7799" />
                 <div class="field-hint">1 – 65535</div>
               </div>
 
@@ -138,6 +149,122 @@
             </div>
           </div>
         </div>
+      </section>
+
+      <!-- Manual View -->
+      <section id="view-manual" class="view">
+        <div class="manual-wrap">
+
+          <!-- Page header -->
+          <div class="man-page-header">
+            <span class="man-header-tag">Internal Use · Assa Abloy Marine Division</span>
+            <h1>Concentrator Monitor · User Manual</h1>
+            <p>How to configure, run and troubleshoot the TCP connection monitor.</p>
+          </div>
+
+          <!-- Overview -->
+          <section class="man-section" id="man-overview">
+            <h2 class="man-section-title"><span class="man-s-icon">📡</span> Overview</h2>
+            <p>Concentrator Monitor is a desktop application that counts <strong>ESTABLISHED</strong> TCP connections on a configurable port in real time, using the standard Windows <code class="man-inline-code">netstat</code> command. It is intended for Assa Abloy Marine Division technicians who need to quickly verify active connections to a Visionline concentrator.</p>
+            <div class="man-info-box">
+              <div class="man-box-label">ℹ️ How it works</div>
+              The app runs the following command at a configurable interval and counts the matching lines:
+              <div class="man-code-block" style="margin-top:10px;">
+                <pre>netstat -na | findstr ":PORT" | findstr "ESTABLISHED" | find /c "ESTABLISHED"</pre>
+              </div>
+            </div>
+          </section>
+
+          <!-- Monitor view -->
+          <section class="man-section" id="man-monitor">
+            <h2 class="man-section-title"><span class="man-s-icon">⬡</span> Monitor View</h2>
+            <p>This is the main screen. It displays the live count of ESTABLISHED connections.</p>
+            <div class="man-steps">
+              <div class="man-step-card">
+                <div class="man-step-num">1</div>
+                <div class="man-step-content">
+                  <h4>Click "Start Monitoring"</h4>
+                  <p>Press the blue button in the Details panel. The counter will refresh automatically at the configured interval.</p>
+                </div>
+              </div>
+              <div class="man-step-card">
+                <div class="man-step-num">2</div>
+                <div class="man-step-content">
+                  <h4>Read the counter</h4>
+                  <p>The large number in the centre shows the total ESTABLISHED connections. The port badge (e.g. <code class="man-inline-code">:7799</code>) shows which port is being monitored.</p>
+                </div>
+              </div>
+              <div class="man-step-card">
+                <div class="man-step-num">3</div>
+                <div class="man-step-content">
+                  <h4>Stop when done</h4>
+                  <p>Press "Stop Monitoring" to pause polling. The last known count stays on screen.</p>
+                </div>
+              </div>
+            </div>
+            <div class="man-tip-box">
+              <div class="man-box-label">💡 Status colours</div>
+              <strong style="color:#16a34a">Green</strong> — monitoring is running normally.<br>
+              <strong style="color:#dc2626">Red</strong> — an error occurred (e.g. netstat not available). Check the Details panel for the message.
+            </div>
+          </section>
+
+          <!-- Settings -->
+          <section class="man-section" id="man-settings">
+            <h2 class="man-section-title"><span class="man-s-icon">⚙️</span> Settings</h2>
+            <p>Open the <strong>Settings</strong> view from the sidebar to change these values:</p>
+            <table class="man-cmd-table">
+              <thead>
+                <tr><th>Field</th><th>Default</th><th>Description</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Port Number</strong></td>
+                  <td><code class="man-inline-code">7799</code></td>
+                  <td>The TCP port to monitor. Default Visionline concentrator port: 7799.</td>
+                </tr>
+                <tr>
+                  <td><strong>Refresh Interval</strong></td>
+                  <td><code class="man-inline-code">5 s</code></td>
+                  <td>How often (in seconds) the command is re-run. Range: 1 – 3600.</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="man-info-box">
+              <div class="man-box-label">ℹ️ Persistence</div>
+              Settings are saved to disk on this machine only (via Electron's config store). They survive app restarts. Credentials are never sent to the cloud.
+            </div>
+          </section>
+
+          <!-- Troubleshooting -->
+          <section class="man-section" id="man-trouble">
+            <h2 class="man-section-title"><span class="man-s-icon">🔧</span> Troubleshooting</h2>
+            <div class="man-steps">
+              <div class="man-step-card">
+                <div class="man-step-num man-step-red">!</div>
+                <div class="man-step-content">
+                  <h4>Counter shows "–" or does not update</h4>
+                  <p>Make sure you have clicked <strong>Start Monitoring</strong>. If the problem persists, verify that <code class="man-inline-code">netstat</code> is available by opening PowerShell and running <code class="man-inline-code">netstat -na</code>.</p>
+                </div>
+              </div>
+              <div class="man-step-card">
+                <div class="man-step-num man-step-red">!</div>
+                <div class="man-step-content">
+                  <h4>Count is always 0</h4>
+                  <p>Check that the port in Settings matches the port the concentrator is actually listening on. Use <code class="man-inline-code">netstat -na | findstr LISTENING</code> to list active listening ports.</p>
+                </div>
+              </div>
+              <div class="man-step-card">
+                <div class="man-step-num man-step-red">!</div>
+                <div class="man-step-content">
+                  <h4>App crashes on launch</h4>
+                  <p>Run the app from PowerShell with <code class="man-inline-code">npm run dev</code> to see error output. Check that all dependencies are installed with <code class="man-inline-code">npm install</code>.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </div><!-- /.manual-wrap -->
       </section>
 
     </main>

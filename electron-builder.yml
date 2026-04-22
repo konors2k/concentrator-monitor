@@ -11,6 +11,8 @@ files:
   - package.json
 
 win:
+  signingHashAlgorithms: []
+  sign: null
   target:
     - target: nsis
       arch: [x64]

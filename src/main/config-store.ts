@@ -4,7 +4,7 @@ import { app } from 'electron';
 import type { AppConfig } from '../shared/types';
 
 const DEFAULT_CONFIG: AppConfig = {
-  port: 443,
+  port: 7799,
   intervalSeconds: 5,
 };
 

@@ -2,7 +2,7 @@ import type { AppConfig, NetstatResult } from '../../shared/types';
 
 let isRunning = false;
 let intervalHandle: ReturnType<typeof setInterval> | null = null;
-let currentConfig: AppConfig = { port: 443, intervalSeconds: 5 };
+let currentConfig: AppConfig = { port: 7799, intervalSeconds: 5 };
 
 const countDisplay = document.getElementById('count-display') as HTMLElement;
 const statusLine = document.getElementById('status-line') as HTMLElement;
