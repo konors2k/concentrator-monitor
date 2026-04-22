@@ -14,14 +14,7 @@ win:
   signingHashAlgorithms: []
   sign: null
   target:
-    - target: nsis
+    - target: portable
       arch: [x64]
-
-nsis:
-  oneClick: false
-  allowToChangeInstallationDirectory: true
-  createDesktopShortcut: true
-  createStartMenuShortcut: true
-  shortcutName: Concentrator Monitor
 
 publish: null
