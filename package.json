@@ -1,22 +1,20 @@
 {
   "name": "concentrator-monitor",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Monitors ESTABLISHED TCP connections on a configurable port",
-  "main": "dist/main/main.js",
   "scripts": {
-    "build:main": "tsc -p tsconfig.main.json",
-    "build:renderer": "esbuild src/renderer/ts/renderer.ts --bundle --outfile=dist/renderer/ts/renderer.js --platform=browser",
-    "copy:assets": "node -e \"require('fs').cpSync('src/renderer', 'dist/renderer', {recursive:true, filter: (s) => !s.endsWith('.ts')})\"",
-    "build": "npm run build:main && npm run build:renderer && npm run copy:assets",
-    "start": "npm run build && electron .",
-    "dev": "npm run build && electron . --enable-logging",
-    "pack": "npm run build && electron-builder --dir",
-    "dist": "npm run build && electron-builder --win --x64"
+    "build:renderer": "esbuild src/renderer/ts/renderer.ts --bundle --outfile=src/renderer/ts/renderer.js --platform=browser",
+    "build": "npm run build:renderer",
+    "tauri": "cargo tauri",
+    "dev": "npm run build:renderer && cargo tauri dev",
+    "dist": "npm run build:renderer && cargo tauri build"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2"
   },
   "devDependencies": {
+    "@tauri-apps/cli": "^2",
     "@types/node": "^22.0.0",
-    "electron": "^33.0.0",
-    "electron-builder": "^25.0.0",
     "esbuild": "^0.28.0",
     "typescript": "^5.4.5"
   }

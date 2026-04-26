@@ -1,3 +1,4 @@
+import { invoke } from '@tauri-apps/api/core';
 import type { AppConfig, NetstatResult } from '../../shared/types';
 
 let isRunning = false;
@@ -59,7 +60,7 @@ function stopMonitoring(): void {
 }
 
 async function runQuery(): Promise<void> {
-  const result: NetstatResult = await window.concentratorAPI.queryNetstat(currentConfig.port);
+  const result: NetstatResult = await invoke<NetstatResult>('cmd_query_netstat', { port: currentConfig.port });
   animateCount(result);
 }
 

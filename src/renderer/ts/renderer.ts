@@ -1,9 +1,10 @@
+import { invoke } from '@tauri-apps/api/core';
 import type { AppConfig } from '../../shared/types';
 import { initMonitorView, updateMonitorConfig } from './monitor-view';
 import { initSettingsView } from './settings-view';
 
 async function bootstrap(): Promise<void> {
-  const config: AppConfig = await window.concentratorAPI.loadConfig();
+  const config: AppConfig = await invoke<AppConfig>('cmd_load_config');
 
   initMonitorView(config);
   initSettingsView(config, (newConfig) => {
