@@ -1,6 +1,9 @@
 use serde::Serialize;
+use std::os::windows::process::CommandExt;
 use std::process::Command;
 use std::time::{SystemTime, UNIX_EPOCH};
+
+const CREATE_NO_WINDOW: u32 = 0x08000000;
 
 #[derive(Serialize)]
 pub struct NetstatResult {
@@ -15,12 +18,9 @@ pub async fn query_netstat(port: u16) -> NetstatResult {
         .unwrap_or_default()
         .as_millis() as u64;
 
-    let cmd_str = format!(
-        "netstat -na | findstr \":{port}\" | findstr \"ESTABLISHED\" | find /c \"ESTABLISHED\""
-    );
-
-    let result = Command::new("cmd")
-        .args(["/C", &cmd_str])
+    let result = Command::new("netstat")
+        .args(["-na"])
+        .creation_flags(CREATE_NO_WINDOW)
         .output();
 
     match result {
@@ -31,19 +31,12 @@ pub async fn query_netstat(port: u16) -> NetstatResult {
         },
         Ok(output) => {
             let stdout = String::from_utf8_lossy(&output.stdout);
-            let raw = stdout.trim();
-            match raw.parse::<i32>() {
-                Ok(count) => NetstatResult { count, error: None, timestamp },
-                Err(_) => {
-                    // find /c exits with code 1 when count is 0, stdout is still "0"
-                    let stderr = String::from_utf8_lossy(&output.stderr).to_string();
-                    NetstatResult {
-                        count: 0,
-                        error: if stderr.is_empty() { None } else { Some(stderr) },
-                        timestamp,
-                    }
-                }
-            }
+            let port_str = format!(":{port}");
+            let count = stdout
+                .lines()
+                .filter(|line| line.contains(&port_str) && line.contains("ESTABLISHED"))
+                .count() as i32;
+            NetstatResult { count, error: None, timestamp }
         }
     }
 }
