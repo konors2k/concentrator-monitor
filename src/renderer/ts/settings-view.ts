@@ -1,3 +1,4 @@
+import { invoke } from '@tauri-apps/api/core';
 import type { AppConfig } from '../../shared/types';
 
 type OnSaveCallback = (config: AppConfig) => void;
@@ -26,7 +27,7 @@ export function initSettingsView(config: AppConfig, onSave: OnSaveCallback): voi
 
     const newConfig: AppConfig = { port, intervalSeconds };
     try {
-      await window.concentratorAPI.saveConfig(newConfig);
+      await invoke('cmd_save_config', { config: newConfig });
       showStatus('Settings saved', 'success');
       onSave(newConfig);
     } catch (err) {

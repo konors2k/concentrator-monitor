@@ -4,3 +4,6 @@ release/
 src/**/*.js
 *.js.map
 .DS_Store
+
+# Tauri / Rust build artifacts
+src-tauri/target/

@@ -1,0 +1,33 @@
+{
+  "productName": "concentrator-monitor",
+  "version": "1.0.0",
+  "identifier": "com.assaabloy.concentrator-monitor",
+  "build": {
+    "frontendDist": "../src/renderer"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Concentrator Monitor",
+        "width": 900,
+        "height": 600,
+        "minWidth": 700,
+        "minHeight": 450
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' ipc: http://ipc.localhost"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["nsis", "msi"],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}
