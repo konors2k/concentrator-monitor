@@ -1,6 +1,6 @@
 {
   "name": "concentrator-monitor",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Monitors ESTABLISHED TCP connections on a configurable port",
   "scripts": {
     "build:renderer": "esbuild src/renderer/ts/renderer.ts --bundle --outfile=src/renderer/ts/renderer.js --platform=browser",
